@@ -9,13 +9,13 @@ using UnityEngine.SceneManagement;
 
 public class ProjectInstaller : Installer
 {
-    [SerializeField] private Dependencies dependencies;
+    [SerializeField] private Dependencies _dependencies;
     [SerializeField] private SceneField _nextScene;
     private InitializableServices _initializableServices;
 
     public override void InstallBindings(Context context)
     {
-        var projectDependencies = context.Instantiate(dependencies);
+        var projectDependencies = context.Instantiate(_dependencies);
         projectDependencies.BindInstances(context);
         
         var initializableServices = new InitializableServices();

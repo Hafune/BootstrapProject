@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d67953fe75c848cb96b7208eb0664bc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dependencies: {fileID: 2573654325068739137, guid: 82cb06d617aee854b8d5d7771def8790, type: 3}
+  _dependencies: {fileID: 2573654325068739137, guid: 82cb06d617aee854b8d5d7771def8790, type: 3}
   _nextScene:
     m_SceneAsset: {fileID: 0}
     m_SceneName: 

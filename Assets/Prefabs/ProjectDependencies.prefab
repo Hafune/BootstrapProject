@@ -50,7 +50,6 @@ MonoBehaviour:
   ComponentDependencies:
   - {fileID: 3321165552609416986}
   MonoDependencies:
-  - {fileID: 8335221090014701793}
   - {fileID: 1366764752889626671}
 --- !u!1 &3879970463186093349
 GameObject:
@@ -170,14 +169,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 626291510834526457, guid: 7703869f94894674f81d87bcd8808ae6, type: 3}
   m_PrefabInstance: {fileID: 4325902021400772972}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8335221090014701793 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5738737746983741837, guid: 7703869f94894674f81d87bcd8808ae6, type: 3}
-  m_PrefabInstance: {fileID: 4325902021400772972}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
