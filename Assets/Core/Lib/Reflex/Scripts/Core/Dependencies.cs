@@ -30,7 +30,7 @@ namespace Reflex.Scripts.Core
 
             for (int i = 0, iMax = ComponentDependencies.Length; i < iMax; i++)
                 context.BindInstanceAs(ComponentDependencies[i], ComponentDependencies[i].GetType());
-
+            
             for (int i = 0, iMax = MonoDependencies.Length; i < iMax; i++)
                 context.BindInstanceAs(MonoDependencies[i], MonoDependencies[i].GetType());
         }

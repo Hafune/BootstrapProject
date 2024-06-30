@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Core;
+﻿using Core;
 using Core.Services;
 using Lib;
 using Reflex;
@@ -27,37 +25,10 @@ public class ProjectInstaller : Installer
         context.BindInstanceAs(new PlayerInputs().Player);
 
         initializableServices.Initialize(context);
-        EnableProjectDependencies(projectDependencies.gameObject);
+        
+        DontDestroyOnLoad(projectDependencies);
+        projectDependencies.gameObject.SetActive(true);
         
         SceneManager.LoadScene(_nextScene);
-    }
-
-    private void EnableProjectDependencies(GameObject projectDependencies)
-    {
-        DontDestroyOnLoad(projectDependencies);
-        projectDependencies.SetActive(true);
-
-#if UNITY_EDITOR
-        int index = 0;
-        foreach (var go in gameObject.scene.GetRootGameObjects().OrderBy(i => i.name))
-            go.transform.SetSiblingIndex(index++);
-#endif
-    }
-
-    private class InitializableServices
-    {
-        private readonly List<IInitializableService> _list = new(16);
-
-        public T Add<T>(T service) where T : IInitializableService
-        {
-            _list.Add(service);
-            return service;
-        }
-
-        public void Initialize(Context context)
-        {
-            foreach (var service in _list)
-                service.InitializeService(context);
-        }
     }
 }

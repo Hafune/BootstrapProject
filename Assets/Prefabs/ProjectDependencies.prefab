@@ -49,7 +49,6 @@ MonoBehaviour:
   ScriptableObjects: []
   ComponentDependencies:
   - {fileID: 3321165552609416986}
-  - {fileID: 7597564198485204141}
   MonoDependencies:
   - {fileID: 8335221090014701793}
   - {fileID: 1366764752889626671}
@@ -169,11 +168,6 @@ MonoBehaviour:
 --- !u!4 &3799270309503089045 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 626291510834526457, guid: 7703869f94894674f81d87bcd8808ae6, type: 3}
-  m_PrefabInstance: {fileID: 4325902021400772972}
-  m_PrefabAsset: {fileID: 0}
---- !u!20 &7597564198485204141 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 6153967244475063745, guid: 7703869f94894674f81d87bcd8808ae6, type: 3}
   m_PrefabInstance: {fileID: 4325902021400772972}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &8335221090014701793 stripped

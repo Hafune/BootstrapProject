@@ -10,7 +10,7 @@ namespace Core.Test
         [SerializeField] private float _speed;
         private PlayerInputs.PlayerActions _playerInputs;
 
-        private void Awake()
+        private void Start()
         {
             Context.Resolve<CinemachineVirtualCamera>().Follow = transform;
             _playerInputs = Context.Resolve<PlayerInputs.PlayerActions>();
@@ -19,6 +19,7 @@ namespace Core.Test
         private void FixedUpdate()
         {
             var direction = _playerInputs.Move.ReadValue<Vector2>();
+            
             _body.velocity = new Vector3(direction.x, 0, direction.y) * _speed;
         }
     }
