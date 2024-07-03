@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+﻿using System.Runtime.CompilerServices;
 using Reflex;
 using UnityEngine;
 
@@ -6,13 +6,9 @@ namespace Lib
 {
     public abstract class MonoConstruct : MonoBehaviour
     {
-        public static MethodInfo GetMethod() => typeof(MonoConstruct).GetMethod(nameof(Construct),
-            BindingFlags.NonPublic |
-            BindingFlags.Instance
-        );
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void SetupContext(Context c, MonoConstruct monoConstruct) => monoConstruct.Context = c;
 
         protected Context Context { get; private set; }
-
-        private void Construct(Context c) => Context = c;
     }
 }

@@ -10,8 +10,6 @@ namespace Reflex.Scripts.Utilities
     internal static class MonoInstantiate
     {
         private static Transform _hiddenParent;
-        private static readonly MethodInfo _method;
-        private static object[] _params = new object[1];
 
         private static Transform HiddenParent
         {
@@ -27,8 +25,6 @@ namespace Reflex.Scripts.Utilities
                 return _hiddenParent;
             }
         }
-
-        static MonoInstantiate() => _method = MonoConstruct.GetMethod();
 
         internal static T Instantiate<T>(T original, Transform parent, Context context, Func<Transform, T> instantiate,
             MonoInjectionMode injectionMode) where T : Component
@@ -48,9 +44,9 @@ namespace Reflex.Scripts.Utilities
                 instance.transform.SetParent(parent, false);
 
             var list = instance.GetInjectables(injectionMode);
-            _params[0] = context;
+            
             for (int i = 0, count = list.Count; i < count; i++)
-                _method.Invoke(list[i], _params);
+                MonoConstruct.SetupContext(context, list[i]);
 
             instance.gameObject.RestoreRectTransform(original);
             instance.gameObject.SetActive(prefabWasActive);
