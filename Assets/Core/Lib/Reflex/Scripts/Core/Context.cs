@@ -1,10 +1,8 @@
 ﻿using System;
 using UnityEngine;
-using Reflex.Injectors;
 using Reflex.Scripts.Utilities;
 using System.Collections.Generic;
 using Reflex.Scripts.Enums;
-using Reflex.Scripts.Extensions;
 
 namespace Reflex
 {
@@ -16,7 +14,7 @@ namespace Reflex
         public string Name { get; }
         private readonly List<Context> _children = new();
         private readonly CompositeDisposable _disposables = new();
-        private readonly Dictionary<Type, IResolver> _resolvers = new();
+        internal readonly Dictionary<Type, IResolver> _resolvers = new();
 
         public Context(string name)
         {
@@ -76,13 +74,6 @@ namespace Reflex
             return _resolvers.ContainsKey(typeof(T));
         }
 
-        public void BindFunction<TContract>(Func<TContract> function)
-        {
-            var resolver = new FunctionResolver(function as Func<object>);
-            _disposables.Add(resolver);
-            _resolvers.Add(typeof(TContract), resolver);
-        }
-
         public void BindInstance(object instance)
         {
             BindInstanceAs(instance, instance.GetType());
@@ -100,37 +91,6 @@ namespace Reflex
             _resolvers[asType] = resolver;
         }
 
-        public void BindTransient<TContract, TConcrete>() where TConcrete : TContract
-        {
-            var resolver = new TransientResolver(typeof(TConcrete));
-            _disposables.Add(resolver);
-            _resolvers[typeof(TContract)] = resolver;
-        }
-
-        public void BindSingleton<TContract, TConcrete>() where TConcrete : TContract
-        {
-            var resolver = new SingletonResolver(typeof(TConcrete));
-            _disposables.Add(resolver);
-            _resolvers[typeof(TContract)] = resolver;
-        }
-
-        public void BindSingleton<TContract>()
-        {
-            var resolver = new SingletonResolver(typeof(TContract));
-            _disposables.Add(resolver);
-            _resolvers[typeof(TContract)] = resolver;
-        }
-
-        public T Construct<T>()
-        {
-            return ConstructorInjector.ConstructAndInject<T>(this);
-        }
-
-        public object Construct(Type concrete)
-        {
-            return ConstructorInjector.ConstructAndInject(concrete, this);
-        }
-
         public TContract Resolve<TContract>()
         {
             return (TContract)Resolve(typeof(TContract));
@@ -144,14 +104,6 @@ namespace Reflex
             }
 
             throw new UnknownContractException(contract);
-        }
-
-        public void InjectMono(Component instance, MonoInjectionMode injectionMode = MonoInjectionMode.Single)
-        {
-            var arr = instance.GetInjectables(injectionMode);
-
-            for (int i = 0, iMax = arr.Count; i < iMax; i++)
-                AttributeInjector.Inject(arr[i], this);
         }
 
         public T Instantiate<T>(T original) where T : Component
