@@ -14,7 +14,7 @@ namespace Reflex
         public string Name { get; }
         private readonly List<Context> _children = new();
         private readonly CompositeDisposable _disposables = new();
-        internal readonly Dictionary<Type, IResolver> _resolvers = new();
+        private readonly Dictionary<Type, IResolver> _resolvers = new();
 
         public Context(string name)
         {

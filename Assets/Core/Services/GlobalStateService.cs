@@ -1,15 +1,15 @@
 namespace Core
 {
-    public interface IAbstractGlobalState
+    public interface IGlobalState
     {
         void DisableState();
     }
 
     public class GlobalStateService
     {
-        private IAbstractGlobalState _currentState;
+        private IGlobalState _currentState;
 
-        public bool ChangeActiveState(IAbstractGlobalState state)
+        public bool ChangeActiveState(IGlobalState state)
         {
             if (_currentState == state)
                 return false;

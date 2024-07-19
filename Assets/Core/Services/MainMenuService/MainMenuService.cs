@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Core.Services
 {
     [Serializable]
-    public class MainMenuService : IInitializableService, IAbstractGlobalState
+    public class MainMenuService : IInitializableService, IGlobalState
     {
         private GlobalStateService _globalStateService;
 

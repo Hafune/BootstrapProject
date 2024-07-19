@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Core.Services
 {
     [Serializable]
-    public class GameplayStateService : MonoConstruct, IAbstractGlobalState
+    public class GameplayStateService : MonoConstruct, IGlobalState
     {
         [SerializeField] private Transform _playerCharacterPrefab;
         private Transform _playerCharacter;
