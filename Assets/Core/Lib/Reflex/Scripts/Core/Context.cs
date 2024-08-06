@@ -2,7 +2,6 @@
 using UnityEngine;
 using Reflex.Scripts.Utilities;
 using System.Collections.Generic;
-using Reflex.Scripts.Enums;
 
 namespace Reflex
 {
@@ -24,10 +23,8 @@ namespace Reflex
 
         public void Dispose()
         {
-            foreach (var child in _children.Reversed())
-            {
-                child.Dispose();
-            }
+            for (int i = _children.Count - 1; i >= 0; i--)
+                _children[i].Dispose();
 
             Debug.Log($"Disposing container: {Name}");
             _disposables.Dispose();
@@ -109,34 +106,25 @@ namespace Reflex
         public T Instantiate<T>(T original) where T : Component
         {
             return MonoInstantiate.Instantiate(original, null, this,
-                parent => UnityEngine.Object.Instantiate(original, parent), MonoInjectionMode.Recursive);
+                parent => UnityEngine.Object.Instantiate(original, parent));
         }
 
-        public T Instantiate<T>(T original, Transform container = null,
-            MonoInjectionMode injectionMode = MonoInjectionMode.Recursive) where T : Component
+        public T Instantiate<T>(T original, Transform container) where T : Component
         {
             return MonoInstantiate.Instantiate(original, container, this,
-                parent => UnityEngine.Object.Instantiate<T>(original, parent), injectionMode);
+                parent => UnityEngine.Object.Instantiate(original, parent));
         }
 
-        public T Instantiate<T>(T original, Transform container, bool worldPositionStays,
-            MonoInjectionMode injectionMode = MonoInjectionMode.Recursive) where T : Component
+        public T Instantiate<T>(T original, Transform container, bool worldPositionStays) where T : Component
         {
             return MonoInstantiate.Instantiate(original, container, this,
-                parent => UnityEngine.Object.Instantiate<T>(original, parent, worldPositionStays), injectionMode);
-        }
-
-        public T Instantiate<T>(T original, Vector3 position, Quaternion rotation, Transform container,
-            MonoInjectionMode injectionMode) where T : Component
-        {
-            return MonoInstantiate.Instantiate(original, container, this,
-                parent => UnityEngine.Object.Instantiate<T>(original, position, rotation, parent), injectionMode);
+                parent => UnityEngine.Object.Instantiate(original, parent, worldPositionStays));
         }
         
         public T Instantiate<T>(T original, Vector3 position, Quaternion rotation, Transform container = null) where T : Component
         {
             return MonoInstantiate.Instantiate(original, container, this,
-                parent => UnityEngine.Object.Instantiate<T>(original, position, rotation, parent), MonoInjectionMode.Recursive);
+                parent => UnityEngine.Object.Instantiate(original, position, rotation, parent));
         }
     }
 }

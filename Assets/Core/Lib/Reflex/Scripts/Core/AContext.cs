@@ -1,17 +1,17 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System;
+using UnityEngine;
 
 namespace Reflex.Scripts.Core
 {
     public abstract class AContext : Installer
     {
-        [SerializeField] private List<Installer> _installers = new List<Installer>();
+        [SerializeField] private Installer[] _installers = Array.Empty<Installer>();
 
         public override void InstallBindings(Context context)
         {
-            foreach (var installer in _installers)
+            for (int i = 0, iMax = _installers.Length; i < iMax; i++)
             {
-                installer.InstallBindings(context);
+                _installers[i].InstallBindings(context);
             }
         }
     }

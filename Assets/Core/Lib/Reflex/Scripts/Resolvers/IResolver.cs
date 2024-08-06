@@ -2,7 +2,7 @@ using System;
 
 namespace Reflex
 {
-	internal interface IResolver : IDisposable
+	public interface IResolver : IDisposable
 	{
 		Type Concrete { get; }
 		int Resolutions { get; }

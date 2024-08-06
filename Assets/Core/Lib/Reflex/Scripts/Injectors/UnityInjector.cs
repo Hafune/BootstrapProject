@@ -17,8 +17,14 @@ namespace Reflex.Injectors
 
     internal static class UnityInjector
     {
-        internal static void BeforeAwakeOfFirstSceneOnly(ProjectContext projectContext)
+        private static bool _alreadyExist;
+        
+        internal static void BeforeAwakeOfFirstSceneOnly(AContext projectContext)
         {
+            if (_alreadyExist)
+                return;
+
+            _alreadyExist = true;
             var projectContainer = CreateProjectContainer(projectContext);
             UnityStaticEvents.OnSceneEarlyAwake += scene =>
             {
@@ -30,7 +36,7 @@ namespace Reflex.Injectors
 #endif
         }
 
-        private static Context CreateProjectContainer(ProjectContext projectContext)
+        private static Context CreateProjectContainer(AContext projectContext)
         {
             var container = ContextTree.Root = new Context("ProjectContainer");
 

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Reflection;
+using System.Collections.Generic;
 using Lib;
-using Reflex.Scripts.Enums;
-using Reflex.Scripts.Extensions;
 using UnityEngine;
 
 namespace Reflex.Scripts.Utilities
@@ -10,6 +8,7 @@ namespace Reflex.Scripts.Utilities
     internal static class MonoInstantiate
     {
         private static Transform _hiddenParent;
+        private static readonly List<MonoConstruct> _list = new();
 
         private static Transform HiddenParent
         {
@@ -20,14 +19,14 @@ namespace Reflex.Scripts.Utilities
 
                 var gameObject = new GameObject("[Reflex] Hidden Parent");
                 gameObject.SetActive(false);
+                gameObject.hideFlags = HideFlags.DontSave;
                 _hiddenParent = gameObject.transform;
 
                 return _hiddenParent;
             }
         }
 
-        internal static T Instantiate<T>(T original, Transform parent, Context context, Func<Transform, T> instantiate,
-            MonoInjectionMode injectionMode) where T : Component
+        internal static T Instantiate<T>(T original, Transform parent, Context context, Func<Transform, T> instantiate) where T : Component
         {
             var root = parent;
             var prefabWasActive = original.gameObject.activeSelf;
@@ -43,21 +42,22 @@ namespace Reflex.Scripts.Utilities
             if (instance.transform.parent != parent)
                 instance.transform.SetParent(parent, false);
 
-            var list = instance.GetInjectables(injectionMode);
-            
-            for (int i = 0, count = list.Count; i < count; i++)
-                MonoConstruct.SetupContext(context, list[i]);
+            instance.GetComponentsInChildren(true, _list);
 
-            instance.gameObject.RestoreRectTransform(original);
+            for (int i = 0, iMax = _list.Count; i < iMax; i++)
+                MonoConstruct.SetupContext(context, _list[i]);
+
+            if (instance.transform is RectTransform rectTransform)
+                rectTransform.RestoreRectTransform(original);
+            
             instance.gameObject.SetActive(prefabWasActive);
 
             return instance;
         }
 
-        internal static void RestoreRectTransform(this GameObject gameObject, Component original)
+        internal static void RestoreRectTransform(this RectTransform rectTransform, Component original)
         {
-            if (gameObject.TryGetComponent<RectTransform>(out var rectTransform) &&
-                original.TryGetComponent<RectTransform>(out var originalRectTransform))
+            if (original.TryGetComponent<RectTransform>(out var originalRectTransform))
             {
                 rectTransform.offsetMax = originalRectTransform.offsetMax;
                 rectTransform.offsetMin = originalRectTransform.offsetMin;

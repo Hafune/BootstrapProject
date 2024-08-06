@@ -1,3 +1,4 @@
+using Reflex.Injectors;
 using UnityEngine;
 using Reflex.Scripts.Events;
 
@@ -6,7 +7,11 @@ namespace Reflex.Scripts.Core
     [DefaultExecutionOrder(-10000)]
     public class SceneContext : AContext
     {
-        private void Awake() => UnityStaticEvents.OnSceneEarlyAwake.Invoke(gameObject.scene);
+        private void Awake()
+        {
+            UnityInjector.BeforeAwakeOfFirstSceneOnly(this);
+            UnityStaticEvents.OnSceneEarlyAwake.Invoke(gameObject.scene);
+        }
 
         public override void InstallBindings(Context context)
         {
