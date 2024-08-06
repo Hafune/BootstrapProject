@@ -1,6 +1,5 @@
 ﻿using System;
 using Lib;
-using Reflex;
 using UnityEngine;
 
 namespace Core.Services
@@ -22,7 +21,9 @@ namespace Core.Services
 
         public void EnableState()
         {
-            _globalStateService.ChangeActiveState(this);
+            if (!_globalStateService.ChangeActiveState(this))
+                return;
+            
             Debug.Log("GameplayStateService enabled");
             BuildCharacter();
         }
@@ -31,18 +32,14 @@ namespace Core.Services
 
         public void PauseInputs()
         {
-            if (--_totalInputUsers != 0)
-                return;
-
-            _playerInputs.Disable();
+            if (--_totalInputUsers == 0)
+                _playerInputs.Disable();
         }
 
         public void ResumeInputs()
         {
-            if (++_totalInputUsers != 1)
-                return;
-
-            _playerInputs.Enable();
+            if (++_totalInputUsers == 1)
+                _playerInputs.Enable();
         }
 
         private void RemoveCharacterAndControls()
@@ -54,9 +51,6 @@ namespace Core.Services
 
         private void BuildCharacter()
         {
-            if (_playerCharacter is not null)
-                return;
-
             _playerCharacter = Context.Instantiate(_playerCharacterPrefab, Vector3.zero, Quaternion.identity);
             DontDestroyOnLoad(_playerCharacter);
             ResumeInputs();
